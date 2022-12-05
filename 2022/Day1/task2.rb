@@ -1,0 +1,1 @@
+p File.readlines("input1.txt").map(&:to_i).slice_after(&:zero?).map(&:sum).max(3).sum
