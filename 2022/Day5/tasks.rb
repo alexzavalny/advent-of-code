@@ -2,9 +2,8 @@ task = ARGV[1].to_i # 1 or 2
 stacks = []
 input = File.open(ARGV[0],"r")
 
-while line = input.gets.chomp
+while !(line = input.gets.chomp).empty?
   next if line.start_with?(" 1")
-  break if line.empty?
 
   (1...line.size).step(4) do |ndx|
     crate = line.chars[ndx].to_s.strip
