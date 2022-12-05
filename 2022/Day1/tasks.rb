@@ -1,0 +1,1 @@
+p File.readlines(ARGV[0]).map(&:to_i).slice_after(&:zero?).map(&:sum).max(ARGV[1] == "1" ? 1 : 3).sum
