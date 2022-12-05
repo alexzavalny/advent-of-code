@@ -1,6 +1,6 @@
 input = File.readlines(ARGV[0], chomp: true)
+task = ARGV[1].to_i # 1 or 2
 COUNT = (input[0].length + 1)/4
-task = ARGV[1].to_i
 
 stacks = Array.new(COUNT) { [] }
 commands = []
@@ -24,18 +24,9 @@ input.each do |line|
   mode = "reading_moves" if line.empty?
 end
 
-if task == 1
-  commands.each do |cmd|
-    cmd[:count].times { 
-      stacks[cmd[:to]].unshift(stacks[cmd[:from]].shift)
-    }
-  end
-end
-
-if task == 2
-  commands.each do |cmd|
-    stacks[cmd[:to]].unshift(stacks[cmd[:from]].shift(cmd[:count])).flatten!
-  end
+commands.each do |cmd|
+  taken = stacks[cmd[:from]].shift(cmd[:count])
+  stacks[cmd[:to]].unshift(task == 1 ? taken.reverse : taken).flatten!
 end
 
 p "Code: #{ stacks.map(&:first).join }"
