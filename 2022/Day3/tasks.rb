@@ -8,4 +8,3 @@ p File.readlines(ARGV[0]).map(&:chars).each_slice(3).sum {
   c = _1.reduce(:&)[0].ord
   c - (c < 91 ? 38 : 96)
 }
-
