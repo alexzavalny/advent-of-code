@@ -1,6 +1,6 @@
-str = File.readlines(ARGV[0]).first.chars
-MARKER = 4
-MSG = 14
+str = File.read(ARGV[0]).chars
 
-puts (MARKER..str.size).find { |i| str[i-MARKER..i-1].uniq.size==MARKER }
-puts (MSG..str.size).find { |i| str[i-MSG..i-1].uniq.size==MSG }
+search = -> (s, len) { (len..s.size).find { |i| s[i-len..i-1].uniq.size==len } }
+
+puts search.(str, 4)
+puts search.(str, 14)
