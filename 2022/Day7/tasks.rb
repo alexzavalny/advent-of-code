@@ -1,28 +1,28 @@
-root = { children: [], size: 0 }
+root = { folders: [], size: 0 }
 path = [root]
 
-File.readlines(ARGV[0], chomp: true).each do |line|
-  case line
+File.readlines(ARGV[0], chomp: true).each do |str|
+  case str
     when /\$ cd \//, /\$ ls/
-    when /dir/ then path.last[:children] << { name: line[4..1000], size: 0, children: [] }
+    when /dir/ then path.last[:folders] << { name: str.split()[1], size: 0, folders: [] }
     when /\$ cd \.\./ then path.pop
-    when /\$ cd/ then path << path.last[:children].find { _1[:name] == line[5..1000] }
-    when /./ then path.last[:size] += line.split(' ')[0].to_i
+    when /\$ cd/ then path << path.last[:folders].find { _1[:name] == str.split()[2] }
+    when /./ then path.last[:size] += str.split()[0].to_i
   end
 end
 
 def total_size(dir)
-  dir[:size] + dir[:children].sum { total_size(_1) }
+  dir[:size] + dir[:folders].sum { total_size(_1) }
 end
 
 def find_smaller(dir, max_size)
-  small_dirs = dir[:children].select { total_size(_1) <= max_size }
-  [small_dirs + dir[:children].map { find_smaller(_1, max_size) }].flatten
+  small_dirs = dir[:folders].select { total_size(_1) <= max_size }
+  [small_dirs + dir[:folders].map { find_smaller(_1, max_size) }].flatten
 end
 
 def find_bigger(dir, min_size)
-  big_dirs = dir[:children].select { total_size(_1) >= min_size }
-  [big_dirs + dir[:children].map { find_bigger(_1, min_size) }].flatten
+  big_dirs = dir[:folders].select { total_size(_1) >= min_size }
+  [big_dirs + dir[:folders].map { find_bigger(_1, min_size) }].flatten
 end
 
 #task 1 
