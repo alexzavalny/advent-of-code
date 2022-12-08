@@ -14,7 +14,7 @@ convert_direction = -> (x, y, dir) { return [[x, y], [x, MAX-y-1], [y, x], [MAX-
 
       if forest[x][y] > max_heights[direction]
         max_heights[direction] = forest[x][y]
-        visible.add "#{x}_#{y}"
+        visible.add([x,y])
       end
     end
   end
