@@ -15,10 +15,9 @@ trans = [tran1, tran2, tran3, tran4]
 
     (0...MAX).each do |j|
       x, y = trans[direction].(i, j)
-      t = forest[x][y]
 
-      if t > mx[direction]
-        mx[direction] = t
+      if forest[x][y] > mx[direction]
+        mx[direction] = forest[x][y]
         visible.add "#{x}_#{y}"
       end
     end
