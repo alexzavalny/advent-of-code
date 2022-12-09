@@ -1,9 +1,8 @@
-require 'set'
 input = File.readlines(ARGV[0]).map(&:split)
 LENGTH = ARGV[1].to_i
 rope = [[0, 0]] * LENGTH
 
-visited = Set[]
+visited = []
 move = { "R" => [1, 0], "L" => [-1, 0], "U" => [0, 1], "D" => [0, -1] }
 
 input.each do |instruction|
@@ -20,7 +19,7 @@ input.each do |instruction|
                   rope[i+1][1] - ((rope[i+1][1] - rope[i][1]) <=> 0)] if need_to_move
     end
 
-    visited.add(rope.last)
+    visited << rope.last unless visited.include?(rope.last)
   end
 end
 
