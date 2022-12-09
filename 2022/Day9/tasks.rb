@@ -6,14 +6,14 @@ def solution(instuctions, length)
   rope = [Vector[0, 0]] * length
   visited = Set[]
 
-  instuctions.each do |dir, step|
+  instuctions.map(&:split).each do |dir, step|
     step.to_i.times do 
       rope[0] += move[dir]
 
       (length-1).times do |i|
         cur, nex = rope[i], rope[i+1]
-        need_to_move = (nex[0] - cur[0]).abs == 2 || (nex[1] - cur[1]).abs == 2
-        
+        need_to_move = (nex - cur).map(&:abs).max == 2
+
         if need_to_move
           rope[i+1] += Vector[cur[0] <=> nex[0], cur[1] <=> nex[1]]
         end
@@ -26,4 +26,7 @@ def solution(instuctions, length)
   visited.size
 end
 
-puts solution(File.readlines(ARGV[0]).map(&:split), ARGV[1].to_i)
+puts solution(File.readlines("input0_1.txt"), 2)
+puts solution(File.readlines("input0_2.txt"), 10)
+puts solution(File.readlines("input1.txt"), 2)
+puts solution(File.readlines("input1.txt"), 10)
