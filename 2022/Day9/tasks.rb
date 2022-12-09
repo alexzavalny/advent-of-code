@@ -1,7 +1,9 @@
+require "set"
+
 def solution(instuctions, length)
   move = { "R" => [1, 0], "L" => [-1, 0], "U" => [0, 1], "D" => [0, -1] }
   rope = [[0, 0]] * length
-  visited = []
+  visited = Set[]
 
   instuctions.each do |dir, step|
     step.to_i.times do 
@@ -16,7 +18,7 @@ def solution(instuctions, length)
         end
       end
 
-      visited << rope.last unless visited.include?(rope.last)
+      visited << rope.last
     end
   end
 
