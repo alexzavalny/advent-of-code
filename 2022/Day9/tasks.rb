@@ -1,10 +1,9 @@
 def solution(instuctions, length)
   move = { "R" => [1, 0], "L" => [-1, 0], "U" => [0, 1], "D" => [0, -1] }
   rope = [[0, 0]] * length
+  visited = []
 
-  instuctions.each_with_object([]) do |ins, visited|
-    dir, step = ins
-
+  instuctions.each do |dir, step|
     step.to_i.times do 
       rope[0] = [rope[0][0] + move[dir][0], rope[0][1] + move[dir][1]]
 
@@ -19,7 +18,9 @@ def solution(instuctions, length)
 
       visited << rope.last unless visited.include?(rope.last)
     end
-  end.size
+  end
+
+  visited.size
 end
 
 puts solution(File.readlines(ARGV[0]).map(&:split), ARGV[1].to_i)
