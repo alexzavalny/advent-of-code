@@ -6,14 +6,15 @@ def solution(instuctions, length)
     dir, step = ins
 
     step.to_i.times do 
-      # move head
       rope[0] = [rope[0][0] + move[dir][0], rope[0][1] + move[dir][1]]
 
-      # move each of ta
       (length-1).times do |i|
-        need_to_move = (rope[i+1][0] - rope[i][0]).abs == 2 || (rope[i+1][1] - rope[i][1]).abs == 2
-        rope[i+1] = [rope[i+1][0] - (rope[i+1][0] <=> rope[i][0]),
-                    rope[i+1][1] - (rope[i+1][1] <=> rope[i][1])] if need_to_move
+        cur, nex = rope[i], rope[i+1]
+        need_to_move = (nex[0] - cur[0]).abs == 2 || (nex[1] - cur[1]).abs == 2
+        
+        if need_to_move
+          rope[i+1] = [nex[0] - (nex[0] <=> cur[0]), nex[1] - (nex[1] <=> cur[1])]
+        end
       end
 
       visited << rope.last unless visited.include?(rope.last)
