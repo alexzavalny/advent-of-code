@@ -11,15 +11,14 @@ input.each do |line|
   dir, step = line.split
 
   step.to_i.times do 
+    # move head
     rope[0] = [rope[0][0] + move[dir][0], rope[0][1] + move[dir][1]]
 
+    # move each of tail
     (LENGTH-1).times do |i|
-      rope[i+1] = rope[i+1].clone
-
-      if (rope[i+1][0] - rope[i][0]).abs >= 2 || (rope[i+1][1] - rope[i][1]).abs >= 2
-        rope[i+1][0] -= abs_max.(rope[i+1][0] - rope[i][0])
-        rope[i+1][1] -= abs_max.(rope[i+1][1] - rope[i][1])
-      end
+      need_to_move = (rope[i+1][0] - rope[i][0]).abs == 2 || (rope[i+1][1] - rope[i][1]).abs == 2
+      rope[i+1] = [rope[i+1][0] - abs_max.(rope[i+1][0] - rope[i][0]),
+                  rope[i+1][1] - abs_max.(rope[i+1][1] - rope[i][1])] if need_to_move
     end
 
     visited.add(rope.last)
