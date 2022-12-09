@@ -1,13 +1,13 @@
 require 'set'
-input = File.readlines(ARGV[0], chomp: true)
+input = File.readlines(ARGV[0]).map(&:split)
 LENGTH = ARGV[1].to_i
 rope = [[0, 0]] * LENGTH
 
 visited = Set[]
 move = { "R" => [1, 0], "L" => [-1, 0], "U" => [0, 1], "D" => [0, -1] }
 
-input.each do |line|
-  dir, step = line.split
+input.each do |instruction|
+  dir, step = instruction
 
   step.to_i.times do 
     # move head
