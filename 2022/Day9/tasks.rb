@@ -12,8 +12,8 @@ def solution(instuctions, length)
       # move each of ta
       (length-1).times do |i|
         need_to_move = (rope[i+1][0] - rope[i][0]).abs == 2 || (rope[i+1][1] - rope[i][1]).abs == 2
-        rope[i+1] = [rope[i+1][0] - ((rope[i+1][0] - rope[i][0] ) <=> 0),
-                    rope[i+1][1] - ((rope[i+1][1] - rope[i][1]) <=> 0)] if need_to_move
+        rope[i+1] = [rope[i+1][0] - (rope[i+1][0] <=> rope[i][0]),
+                    rope[i+1][1] - (rope[i+1][1] <=> rope[i][1])] if need_to_move
       end
 
       visited << rope.last unless visited.include?(rope.last)
