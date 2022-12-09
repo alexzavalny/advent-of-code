@@ -5,7 +5,7 @@ rope = [[0, 0]] * LENGTH
 
 visited = Set[]
 move = { "R" => [1, 0], "L" => [-1, 0], "U" => [0, 1], "D" => [0, -1] }
-abs_max = -> (x) { x < 0 ? [x, -1].max : [x, 1].min }
+short_delta = -> (x) { x == 0 ? 0 : (x < 0 ? -1 : 1) }
 
 input.each do |line|
   dir, step = line.split
@@ -17,8 +17,8 @@ input.each do |line|
     # move each of tail
     (LENGTH-1).times do |i|
       need_to_move = (rope[i+1][0] - rope[i][0]).abs == 2 || (rope[i+1][1] - rope[i][1]).abs == 2
-      rope[i+1] = [rope[i+1][0] - abs_max.(rope[i+1][0] - rope[i][0]),
-                  rope[i+1][1] - abs_max.(rope[i+1][1] - rope[i][1])] if need_to_move
+      rope[i+1] = [rope[i+1][0] - short_delta.(rope[i+1][0] - rope[i][0]),
+                  rope[i+1][1] - short_delta.(rope[i+1][1] - rope[i][1])] if need_to_move
     end
 
     visited.add(rope.last)
