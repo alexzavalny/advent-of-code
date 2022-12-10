@@ -1,20 +1,20 @@
+# The trick I use here is in the reduce function
+# Turns out if you replace prepend addx 0 before each addx, you can ignore cycles
+# and if you replace noop with add x, then you can ignore command names (all will be addx)
+
 def solution(input)
-  cycle, signals = 0, 0
   x_register = 1
 
-  input.map(&:split).each do |command, value|
-    cycles_per_command = {"noop" => 1, "addx" => 2}
-
-    cycles_per_command[command].times do
-      cycle += 1
-      good_cycle = (cycle - 20) % 40 == 0
-      signals += (x_register*cycle) if good_cycle
+  input
+    .map(&:split)
+    .reduce([]) { |acc, ins| acc << ["addx", 0]; acc << ins if ins[1]; acc }
+    .map
+    .with_index(1) do |command, i|
+      signal = x_register * i
+      x_register += command.last.to_i
+      (i - 20) % 40 == 0 ? signal : 0
     end
-  
-    x_register += value.to_i if command == "addx"
-  end
-
-  signals
+    .sum
 end
 
 puts solution(File.readlines("input0.txt", chomp: true))
