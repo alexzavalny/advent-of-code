@@ -21,7 +21,7 @@ def solution(input)
 
   step_map = Array.new (hmap.size) { Array.new (hmap[0].size) { -1 } }
  
-  starting_points.each { step_map[_1[1]][_1[0]] = 0 }
+  starting_points.each { |sp| step_map[sp[1]][sp[0]] = 0 }
 
   change_made = true
   while change_made 
