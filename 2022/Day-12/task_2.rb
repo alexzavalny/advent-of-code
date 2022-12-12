@@ -1,12 +1,9 @@
 require 'set'
 
 def adjuscents(x, y, width, height)
-  result = []
-  result << [x + 1, y] if x + 1 < width
-  result << [x - 1, y] if x > 0
-  result << [x, y + 1] if y + 1 < height
-  result << [x, y - 1] if y > 0
-  result
+  [[x + 1, y], [x - 1, y], [x, y + 1], [x, y - 1]].filter do |x, y|
+    (0...width).include?(x) && (0...height).include?(y)
+  end
 end
 
 def solution(input)
@@ -42,7 +39,7 @@ def solution(input)
     step = elem[:step]
 
     adjuscents(x, y, width, height).each do |new_x, new_y|
-      queue << { step: step + 1, position: [new_x, new_y] } if hmap[y][x] - hmap[new_y][new_x] <= 1 unless visited.include?([new_x, new_y])
+      queue << { step: step + 1, position: [new_x, new_y] } if hmap[y][x] - hmap[new_y][new_x] <= 1 && !visited.include?([new_x, new_y])
     end
   end
 end
