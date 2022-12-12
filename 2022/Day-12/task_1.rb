@@ -29,6 +29,7 @@ def solution(input)
   width, height = hmap[0].size, hmap.size
   queue = [ { step: 0, position: start_pos } ]
   visited = Set[]
+
   while queue.size > 0
     elem = queue.slice!(0)
     next if visited.include?(elem[:position])
@@ -42,8 +43,6 @@ def solution(input)
       queue << { step: step + 1, position: [new_x, new_y] } if hmap[new_y][new_x] - hmap[y][x] <= 1 unless visited.include?([new_x, new_y])
     end
   end
-
-  puts "The end"
 end
 
 puts solution(File.readlines("input0.txt", chomp: true))
