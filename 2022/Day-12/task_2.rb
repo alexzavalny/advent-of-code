@@ -4,39 +4,36 @@ def solution(input)
   starting_points = []
   hmap = input.map.with_index do | line, y |
     line.chars.map.with_index do |char, x|
-      if char == "S"
+      if char == "S" || char == "a"
         starting_points << [x, y]
         1
       elsif char == "E"
         end_pos = [x, y]
         26
-      elsif char == "a"
-        starting_points << [x, y]
-        1
       else
-        char.ord - 96
+        char.ord - 'a'.ord + 1
       end
     end
   end
 
-  step_map = Array.new (hmap.size) { Array.new (hmap[0].size) { -1 } }
- 
+  width, height = hmap[0].size, hmap.size
+  step_map = Array.new (height) { Array.new (width) { -1 } }
   starting_points.each { |sp| step_map[sp[1]][sp[0]] = 0 }
 
   change_made = true
   while change_made 
     change_made = false
-    (0...hmap[0].size).each do |x|
-      (0...hmap.size).each do |y|
+    (0...width).each do |x|
+      (0...height).each do |y|
         available = []
         available << step_map[y-1][x] if y - 1 >= 0 && hmap[y][x] - hmap[y - 1][x] <= 1 && step_map[y-1][x] > -1
-        available << step_map[y+1][x] if y + 1 < hmap.size && hmap[y][x] - hmap[y + 1][x] <= 1 && step_map[y+1][x] > -1
+        available << step_map[y+1][x] if y + 1 < height && hmap[y][x] - hmap[y + 1][x] <= 1 && step_map[y+1][x] > -1
         available << step_map[y][x-1] if x - 1 >= 0 && hmap[y][x] - hmap[y][x - 1] <= 1 && step_map[y][x-1] > -1
-        available << step_map[y][x+1] if x + 1 < hmap[0].size && hmap[y][x] - hmap[y][x + 1] <= 1 && step_map[y][x+1] > -1
+        available << step_map[y][x+1] if x + 1 < width && hmap[y][x] - hmap[y][x + 1] <= 1 && step_map[y][x+1] > -1
 
-        new_min = available.min + 1 if available.size > 0
-        if !new_min.nil? && (new_min < step_map[y][x] || step_map[y][x] == -1)
-          step_map[y][x] = new_min
+        min_steps = available.min + 1 if available.size > 0
+        if !min_steps.nil? && (min_steps < step_map[y][x] || step_map[y][x] == -1)
+          step_map[y][x] = min_steps
           change_made = true
         end
       end
@@ -47,5 +44,4 @@ def solution(input)
   step_map[end_pos[1]][end_pos[0]]
 end
 
-#puts solution(File.readlines("input0.txt", chomp: true)) == 29
 puts solution(File.readlines("input1.txt", chomp: true))
