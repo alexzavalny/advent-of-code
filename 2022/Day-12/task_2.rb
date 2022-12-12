@@ -1,3 +1,5 @@
+require 'set'
+
 def solution(input)
   end_pos = []
 
@@ -17,31 +19,23 @@ def solution(input)
   end
 
   width, height = hmap[0].size, hmap.size
-  step_map = Array.new (height) { Array.new (width) { -1 } }
-  starting_points.each { |sp| step_map[sp[1]][sp[0]] = 0 }
+  queue = starting_points.map { { step: 0, position: _1 } }
 
-  change_made = true
-  while change_made 
-    change_made = false
-    (0...width).each do |x|
-      (0...height).each do |y|
-        available = []
-        available << step_map[y-1][x] if y - 1 >= 0 && hmap[y][x] - hmap[y - 1][x] <= 1 && step_map[y-1][x] > -1
-        available << step_map[y+1][x] if y + 1 < height && hmap[y][x] - hmap[y + 1][x] <= 1 && step_map[y+1][x] > -1
-        available << step_map[y][x-1] if x - 1 >= 0 && hmap[y][x] - hmap[y][x - 1] <= 1 && step_map[y][x-1] > -1
-        available << step_map[y][x+1] if x + 1 < width && hmap[y][x] - hmap[y][x + 1] <= 1 && step_map[y][x+1] > -1
+  visited = Set[]
+  while queue.size > 0
+    elem = queue.slice!(0)
+    next if visited.include?(elem[:position])
+    return elem[:step] if elem[:position] == end_pos
 
-        min_steps = available.min + 1 if available.size > 0
-        if !min_steps.nil? && (min_steps < step_map[y][x] || step_map[y][x] == -1)
-          step_map[y][x] = min_steps
-          change_made = true
-        end
-      end
-    end
+    visited << elem[:position]
+    x, y = elem[:position]
+    step = elem[:step]
 
+    queue << { step: step + 1, position: [x, y-1] } if y - 1 >= 0 && hmap[y - 1][x] - hmap[y][x]<= 1 unless visited.include?([x, y-1])
+    queue << { step: step + 1, position: [x, y+1] } if y + 1 < height && hmap[y + 1][x] - hmap[y][x]<= 1 unless visited.include?([x, y+1])
+    queue << { step: step + 1, position: [x-1, y] } if x - 1 >= 0 && hmap[y][x - 1] - hmap[y][x]<= 1 unless visited.include?([x-1, y])
+    queue << { step: step + 1, position: [x+1, y] } if x + 1 < width && hmap[y][x + 1] - hmap[y][x] <= 1 unless visited.include?([x+1, y])
   end
-
-  step_map[end_pos[1]][end_pos[0]]
 end
 
 puts solution(File.readlines("input1.txt", chomp: true))
