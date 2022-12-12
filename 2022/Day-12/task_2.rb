@@ -1,5 +1,14 @@
 require 'set'
 
+def adjuscents(x, y, width, height)
+  result = []
+  result << [x + 1, y] if x + 1 < width
+  result << [x - 1, y] if x > 0
+  result << [x, y + 1] if y + 1 < height
+  result << [x, y - 1] if y > 0
+  result
+end
+
 def solution(input)
   end_pos = Set[]
   starting_pos = []
@@ -32,10 +41,9 @@ def solution(input)
     x, y = elem[:position]
     step = elem[:step]
 
-    queue << { step: step + 1, position: [x, y-1] } if y - 1 >= 0 && hmap[y][x] - hmap[y - 1][x]  <= 1 unless visited.include?([x, y-1])
-    queue << { step: step + 1, position: [x, y+1] } if y + 1 < height && hmap[y][x] - hmap[y + 1][x] <= 1 unless visited.include?([x, y+1])
-    queue << { step: step + 1, position: [x-1, y] } if x - 1 >= 0 && hmap[y][x] - hmap[y][x - 1] <= 1 unless visited.include?([x-1, y])
-    queue << { step: step + 1, position: [x+1, y] } if x + 1 < width && hmap[y][x] - hmap[y][x + 1]  <= 1 unless visited.include?([x+1, y])
+    adjuscents(x, y, width, height).each do |new_x, new_y|
+      queue << { step: step + 1, position: [new_x, new_y] } if hmap[y][x] - hmap[new_y][new_x] <= 1 unless visited.include?([new_x, new_y])
+    end
   end
 end
 
