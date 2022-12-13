@@ -14,12 +14,13 @@ def right_order?(l, r)
 end
 
 def solution1(input)
-  pairs = input.split("\n\n").map { |p| p.split("\n").map { |line| eval(line) } }
-  correct_indexes = []
-  pairs.each_with_index do |pair, index|
-    correct_indexes << (index+1) if right_order?(pair[0], pair[1]) == 1
-  end
-  correct_indexes.sum
+  input
+    .split("\n\n")
+    .map { |p| p.split("\n").map { |line| eval(line) } }
+    .each_with_index
+    .reduce(0) do |sum, ((l, r), index)|
+      right_order?(l, r).zero? ? sum : sum + index + 1
+    end
 end
 
 def solution2(input)
