@@ -14,7 +14,7 @@ end
 def solution1(input)
   input
     .split("\n\n")
-    .map { |p| p.split("\n").map { |line| eval(line) } }
+    .map { |p| p.split("\n").map(&method(:eval)) }
     .each_with_index
     .sum do |(l, r), index|
       compare(l, r) == 1 ? 0 : index.succ
@@ -22,12 +22,12 @@ def solution1(input)
 end
 
 def solution2(input)
-  input # Shamelessly took the tap and then from Nikita
+  input
     .split("\n")
     .reject(&:empty?)
-    .map { |packet| eval(packet) }
+    .map(&method(:eval))
     .tap { |packets| packets.push([[2]], [[6]]) }
-    .sort { |a, b| compare(a, b) }
+    .sort(&method(:compare)) 
     .then { |sorted| sorted.index([[2]]).succ * sorted.index([[6]]).succ }
 end
 
