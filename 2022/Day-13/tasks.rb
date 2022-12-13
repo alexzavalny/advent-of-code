@@ -27,8 +27,3 @@ def solution2(input)
   sorted = packets.sort { |a, b| packet_compare(a, b) }
   return (sorted.index([[2]]) + 1) * (sorted.index([[6]]) + 1)
 end
-
-puts solution1(File.read("input0.txt"))
-puts solution2(File.read("input0.txt"))
-puts solution1(File.read("input1.txt"))
-puts solution2(File.read("input1.txt"))
