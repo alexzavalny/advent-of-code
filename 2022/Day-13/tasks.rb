@@ -22,10 +22,13 @@ def solution1(input)
 end
 
 def solution2(input)
-  packets = input.split("\n").reject(&:empty?).map { |packet| eval(packet) }
-  packets << [[2]] << [[6]]
-  sorted = packets.sort { |a, b| compare(a, b) }
-  return (sorted.index([[2]]) + 1) * (sorted.index([[6]]) + 1)
+  input # Shamelessly took the tap and then from Nikita
+    .split("\n")
+    .reject(&:empty?)
+    .map { |packet| eval(packet) }
+    .tap { |packets| packets.push([[2]], [[6]]) }
+    .sort { |a, b| compare(a, b) }
+    .then { |sorted| sorted.index([[2]]).succ * sorted.index([[6]]).succ }
 end
 
 puts solution1(File.read("input0.txt"))
