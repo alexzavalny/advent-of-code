@@ -3,7 +3,7 @@ def compare(l, r)
 
   l, r = Array(l), Array(r)
 
-  [l, r].map(&:size).min.times do |i|
+  [l.size, r.size].min.times do |i|
     rez = compare(l[i], r[i])
     return rez unless rez.zero?
   end
