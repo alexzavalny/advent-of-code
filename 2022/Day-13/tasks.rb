@@ -16,8 +16,8 @@ def solution1(input)
     .split("\n\n")
     .map { |p| p.split("\n").map { |line| eval(line) } }
     .each_with_index
-    .reduce(0) do |sum, ((l, r), index)|
-      compare(l, r) == 1 ? sum : sum + index + 1
+    .sum do |(l, r), index|
+      (compare(l, r) == 1 ? 0 : index.succ )
     end
 end
 
