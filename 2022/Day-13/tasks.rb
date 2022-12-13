@@ -17,7 +17,7 @@ def solution1(input)
     .map { |p| p.split("\n").map { |line| eval(line) } }
     .each_with_index
     .reduce(0) do |sum, ((l, r), index)|
-      compare(l, r).zero? ? sum : sum + index + 1
+      compare(l, r) == 1 ? sum : sum + index + 1
     end
 end
 
@@ -27,3 +27,8 @@ def solution2(input)
   sorted = packets.sort { |a, b| compare(a, b) }
   return (sorted.index([[2]]) + 1) * (sorted.index([[6]]) + 1)
 end
+
+puts solution1(File.read("input0.txt"))
+puts solution2(File.read("input0.txt"))
+puts solution1(File.read("input1.txt"))
+puts solution2(File.read("input1.txt"))
