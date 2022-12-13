@@ -9,7 +9,7 @@ def packet_compare(l, r)
     return r_o unless r_o.zero?
   end
 
-  return l.size <=> r.size
+  l.size <=> r.size
 end
 
 def solution1(input)
