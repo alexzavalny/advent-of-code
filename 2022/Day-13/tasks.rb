@@ -4,8 +4,8 @@ def packet_compare(l, r)
   l, r = Array(l), Array(r)
 
   [l, r].map(&:size).min.times do |i|
-    r_o = packet_compare(l[i], r[i])
-    return r_o unless r_o.zero?
+    rez = packet_compare(l[i], r[i])
+    return rez unless rez.zero?
   end
 
   l.size <=> r.size
