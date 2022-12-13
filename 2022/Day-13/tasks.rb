@@ -3,9 +3,8 @@ def packet_compare(l, r)
 
   l, r = Array(l), Array(r)
 
-  l.each_with_index do |_, index|
-    break if r.size <= index
-    r_o = packet_compare(l[index], r[index])
+  [l, r].map(&:size).min.times do |i|
+    r_o = packet_compare(l[i], r[i])
     return r_o unless r_o.zero?
   end
 
