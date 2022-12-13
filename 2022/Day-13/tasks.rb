@@ -23,7 +23,7 @@ def solution1(input)
 end
 
 def solution2(input)
-  packets = input.split("\n").filter { |p| p != "" }.map { |packet| eval(packet) }
+  packets = input.split("\n").filter { !_1.empty? }.map { |packet| eval(packet) }
   packets << [[2]] << [[6]]
   sorted = packets.sort { |a, b| packet_compare(a, b) }
   return (sorted.index([[2]]) + 1) * (sorted.index([[6]]) + 1)
