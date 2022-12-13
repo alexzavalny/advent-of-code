@@ -1,10 +1,10 @@
-def packet_compare(l, r) 
+def compare(l, r) 
   return l <=> r if [l, r].all? { _1.is_a?(Integer) }
 
   l, r = Array(l), Array(r)
 
   [l, r].map(&:size).min.times do |i|
-    rez = packet_compare(l[i], r[i])
+    rez = compare(l[i], r[i])
     return rez unless rez.zero?
   end
 
@@ -17,13 +17,13 @@ def solution1(input)
     .map { |p| p.split("\n").map { |line| eval(line) } }
     .each_with_index
     .reduce(0) do |sum, ((l, r), index)|
-      packet_compare(l, r).zero? ? sum : sum + index + 1
+      compare(l, r).zero? ? sum : sum + index + 1
     end
 end
 
 def solution2(input)
   packets = input.split("\n").filter { !_1.empty? }.map { |packet| eval(packet) }
   packets << [[2]] << [[6]]
-  sorted = packets.sort { |a, b| packet_compare(a, b) }
+  sorted = packets.sort { |a, b| compare(a, b) }
   return (sorted.index([[2]]) + 1) * (sorted.index([[6]]) + 1)
 end
