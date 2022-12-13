@@ -17,7 +17,7 @@ def solution1(input)
     .map { |p| p.split("\n").map { |line| eval(line) } }
     .each_with_index
     .sum do |(l, r), index|
-      (compare(l, r) == 1 ? 0 : index.succ )
+      compare(l, r) == 1 ? 0 : index.succ
     end
 end
 
