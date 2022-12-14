@@ -38,24 +38,16 @@ def solution(input)
         break
       end
 
-      if !rocks.include?([sand[0], sand[1] + 1])
-        sand[1] += 1
-        next
-      end
-
-      if !rocks.include?([sand[0] - 1, sand[1] + 1])
-        sand[1] += 1
-        sand[0] -= 1
-        next
-      end
-
-      if !rocks.include?([sand[0] + 1, sand[1] + 1])
-        sand[1] += 1
-        sand[0] += 1
-        next
-      end
-
       moving = false
+
+      [[0, 1], [-1, 1], [1, 1]].each do |offset|
+        if !rocks.include?([sand[0] + offset[0], sand[1] + offset[1]])
+          sand[1] += offset[1]
+          sand[0] += offset[0]
+          moving = true
+          break
+        end
+      end
     end
 
     rocks << sand
