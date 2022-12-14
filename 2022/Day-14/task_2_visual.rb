@@ -2,23 +2,44 @@ require 'set'
 require 'tty-cursor'
 @cursor = TTY::Cursor
 
-def print_board(left, right, top, bottom, rocks, sands, current)
+class String
+  def black;          "\e[30m#{self}\e[0m" end
+  def red;            "\e[31m#{self}\e[0m" end
+  def green;          "\e[32m#{self}\e[0m" end
+  def brown;          "\e[33m#{self}\e[0m" end
+  def blue;           "\e[34m#{self}\e[0m" end
+  def magenta;        "\e[35m#{self}\e[0m" end
+  def cyan;           "\e[36m#{self}\e[0m" end
+  def gray;           "\e[37m#{self}\e[0m" end
+end
+
+def print_board(left, right, top, bottom, rocks, sands, current, path)
   print @cursor.move_to(0,0)
 
   (top..bottom).each do |y|
     (left..right).each do |x|
+      if y == bottom 
+        print "■".gray
+        next
+      end
+
       if rocks.include?([x, y])
-        print "■"
+        print "■".blue
         next
       end
 
       if sands.include?([x, y]) 
-        print "+"
+        print "+".brown
         next
       end
 
       if current == [x, y]
-        print "*"
+        print "*".brown
+        next
+      end
+
+      if path.include?([x, y]) 
+        print "|".brown
         next
       end
 
@@ -56,13 +77,14 @@ def solution(input)
     sand = [500, 0]
     sands += 1
     moving = true
+    path = Set[]
 
     while moving
-      if sands > 0 && sand == [500, 0] && sands % 20 == 0
-        print_board(200, 800, 0, 180, rocks, sandy, sand)
-        sleep 0.0
-      end
-
+      # if sands > 0 && sand == [500, 0] && sands % 20 == 0
+      #   print_board(200, 800, 0, 180, rocks, sandy, sand, path)
+      #   sleep 0.0
+      # end
+      path << [sand[0], sand[1]]
       break if sand[1] > lowest_point
 
       moving = false
@@ -79,11 +101,16 @@ def solution(input)
       end
     end
 
+    if sands % 20 == 0
+      print_board(200, 800, 0, 169, rocks, sandy, sand, path)
+    end
+
     sandy << sand
   end
 
-  print_board(200, 800, 0, 180, rocks, sandy, sand)
+  print_board(200, 800, 0, 169, rocks, sandy, sand, [])
   sands
 end
 
+print @cursor.hide
 puts solution(File.readlines('input1.txt', chomp: true))
