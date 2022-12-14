@@ -29,16 +29,11 @@ def solution(input)
     moving = true
 
     while moving
-      if sand[1] > lowest_point
-        break
-      end
-
-      if sand[1] + 1 > lowest_point + 2
-        moving = false
-        break
-      end
+      break if sand[1] > lowest_point
 
       moving = false
+
+      break if sand[1] + 1 > lowest_point + 2
 
       [[0, 1], [-1, 1], [1, 1]].each do |offset|
         if !rocks.include?([sand[0] + offset[0], sand[1] + offset[1]])

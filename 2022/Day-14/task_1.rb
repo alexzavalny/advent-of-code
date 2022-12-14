@@ -29,9 +29,7 @@ def solution(input)
     moving = true
 
     while moving
-      if sand[1] > lowest_point
-        return sands - 1
-      end
+      return sands - 1 if sand[1] > lowest_point
 
       moving = false
 
