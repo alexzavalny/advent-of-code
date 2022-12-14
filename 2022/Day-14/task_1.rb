@@ -27,18 +27,16 @@ def solution(input)
     end
   end
 
-  off_the_cliff = false
   sands = 0
 
-  while !off_the_cliff do
+  while true do
     sand = [500, 0]
     sands += 1
     moving = true
 
     while moving
       if sand[1] > lowest_point
-        off_the_cliff = true
-        break
+        return sands - 1
       end
 
       if !rocks.include?([sand[0], sand[1] + 1])
@@ -63,8 +61,6 @@ def solution(input)
 
     rocks << sand
   end
-
-  sands - 1
 end
 
 puts solution(File.readlines('input1.txt', chomp: true))
