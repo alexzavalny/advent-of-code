@@ -13,15 +13,9 @@ def solution(input)
 
       lowest_point = [block1[1], block2[1], lowest_point].max
 
-      if block1[0] == block2[0]
-        ([block1[1], block2[1]].min..[block1[1], block2[1]].max).each do |y|
-          rocks << [block1[0], y]
-        end
-      end
-
-      if block1[1] == block2[1]
+      ([block1[1], block2[1]].min..[block1[1], block2[1]].max).each do |y|
         ([block1[0], block2[0]].min..[block1[0], block2[0]].max).each do |x|
-          rocks << [x, block1[1]]
+          rocks << [x, y]
         end
       end
     end
