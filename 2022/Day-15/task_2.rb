@@ -19,8 +19,7 @@ def solution(input, y_range)
     iii = IntervalSet[0..y_range]
 
     sensors.each do |sensor|
-      y_pos = sensor[:pos][1]
-      x_pos = sensor[:pos][0]
+      x_pos, y_pos = sensor[:pos]
       tail = 0
 
       if scan > y_pos
