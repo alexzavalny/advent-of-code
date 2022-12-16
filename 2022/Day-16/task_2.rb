@@ -66,7 +66,7 @@ module Day16
 
       if need_open
         last_flow = path.size > 0 ? path.last[:flow] : 0
-        elem = {place: cur_valve, action: :open, opened: opened.clone, flow: last_flow + calculate_flow(opened) } 
+        elem = {place: cur_valve, action: :open, opened: opened, flow: last_flow + calculate_flow(opened) } 
         return best_way(opened + [cur_valve], cur_valve, false, path + [elem])
       end
 
@@ -74,7 +74,7 @@ module Day16
       leads.each do |way|
         next if should_skip?(path, way)
         last_flow = path.size > 0 ? path.last[:flow] : 0
-        elem = {place: cur_valve, action: :move, destination: way, opened: opened.clone, flow: last_flow + calculate_flow(opened)}
+        elem = {place: cur_valve, action: :move, destination: way, opened: opened, flow: last_flow + calculate_flow(opened)}
 
         if !opened.include?(way) && @valves[way][:rate] > 0
           best_way(opened, way, true, path + [elem])
