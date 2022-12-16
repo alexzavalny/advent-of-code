@@ -10,6 +10,7 @@ module Day16
       @best = 0
       @sum_rates = 0
       @max_opened = { }
+      @calculate_flow = {}
     end
 
     def path_to_str(path)
@@ -25,15 +26,11 @@ module Day16
     def score(path)
       #puts path.size
       return 0 if path.size == 0
-
-      rez = path.last[:flow]
-      if rez > @best
+      if path.last[:flow] > @best
         puts "Scoring #{ path_to_str(path) }"
-        puts "New best: #{rez}"
-        @best = rez
+        @best = path.last[:flow]
+        puts "New best: #{@best}"
       end
-
-      return rez
     end
 
     def should_skip?(path, way)
@@ -47,13 +44,14 @@ module Day16
       return false
     end
 
+    
     def calculate_flow(opened)
-      opened.sum { @valves[_1][:rate] }
+      @calculate_flow[opened] ||= opened.sum { @valves[_1][:rate] }
     end
 
     def should_kill(path)
-      return false if path.size < 5
-      if path.size < MINUTES_TOTAL && score(path) + @sum_rates * (MINUTES_TOTAL - path.size) < @best
+      return false if path.size < 1
+      if path.size < MINUTES_TOTAL && path.last[:flow] + @sum_rates * 0.8 * (MINUTES_TOTAL - path.size) < @best
         return true
       end
       
@@ -61,8 +59,11 @@ module Day16
     end
 
     def best_way(opened, cur_valve, need_open, path)
-      return 0 if should_kill(path)
-      return score(path) if path.size == MINUTES_TOTAL #we did all we can
+      return if should_kill(path)
+      if path.size == MINUTES_TOTAL #we did all we can
+        score(path)
+        return
+      end
 
       if need_open
         last_flow = path.size > 0 ? path.last[:flow] : 0
@@ -108,4 +109,7 @@ module Day16
   
 end
 
-puts Day16::Solution.new.run(File.readlines("input1.txt"))
+require 'benchmark'
+puts Benchmark.measure { 
+  Day16::Solution.new.run(File.readlines("input1.txt")) 
+}
