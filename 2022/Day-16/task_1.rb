@@ -113,4 +113,4 @@ module Day16
   end
 end
 
-puts Day16::Solution.new.run(File.readlines("input1.txt"))
+puts Day16::Solution.new.run(File.readlines("input0.txt"))
