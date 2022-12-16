@@ -1,4 +1,4 @@
-#shamelessly stolen from friend, rewritten and optimized
+#shamelessly stolen from friend Erik, rewritten and optimized
 
 require 'set'
 module Day16
