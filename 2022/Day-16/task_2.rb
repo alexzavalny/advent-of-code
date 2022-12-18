@@ -73,7 +73,7 @@ module Day16
       end
 
       @valves.each_value { calculateDistances(_1) }
-      useful_combos = @useful.all_splits_in_2
+      useful_combos = @useful.all_splits_in_2.reject { |a, b| b.size > a.size }
       le_sum = 0
 
       useful_combos.each_with_index do |(l, r), ndx|
