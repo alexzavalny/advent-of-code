@@ -1,7 +1,11 @@
 def print_chamber_with_rock
+  #return
   puts "[#{@step}] Chamber height #{@chamber.size}. Rock coords: #{@xpos}, #{@ypos}:"
-  puts
+  return
+  x = 0
   (@ypos).times do |my|
+    x = x + 1
+    return if x == 20
     y = @ypos - my
     print '|'
     (7).times do |x|
@@ -53,8 +57,6 @@ def can_move_left?
 end
 
 def can_move_right?
-  puts "can_move_right"
-  p "Current rock: #{@current_rock}"
   return false if @xpos + @current_rock.first.size == @width
   return !would_overlap?(@xpos + 1, @ypos)
 end
@@ -69,7 +71,6 @@ def persist_rock
   @current_rock.size.times do |rock_y|
     inv_y = @current_rock.size - rock_y - 1
     @current_rock[0].size.times do |rock_x|
-      p @chamber
       @chamber[@ypos - rock_y][rock_x + @xpos] = 1 if @current_rock[inv_y][rock_x] == 1
     end
   end
@@ -100,26 +101,23 @@ def solution(input)
     @xpos = 2
     @ypos = @chamber.size + @current_rock.size + 3 - 1
 
-    print_chamber_with_rock
-    p "Current rock: #{@current_rock}"
+    #print_chamber_with_rock
     #blow wind
     while true
-      p "Current rock: #{@current_rock}"
       direction = input.chars[direction_index]
       direction_index = (direction_index + 1) % input.chars.size
       @step = @step + 1
-      p "Current rock: #{@current_rock}"
       #make movement if you can
       if direction == "<"
         #puts "moving left?"
         if can_move_left?
           @xpos -= 1
-          print_chamber_with_rock
+          #print_chamber_with_rock
         end
       elsif direction == ">"
         if can_move_right?
           @xpos += 1
-          print_chamber_with_rock
+          #print_chamber_with_rock
         end
       end
 
@@ -128,7 +126,7 @@ def solution(input)
 
       #move down
       @ypos -= 1
-      print_chamber_with_rock
+     #print_chamber_with_rock
     end
 
     @rock_index = (@rock_index + 1) % @rocks.size
@@ -142,4 +140,5 @@ def solution(input)
   ''
 end
 
-solution(File.readlines("input0.txt").first)
+require 'benchmark'
+puts Benchmark.measure { solution(File.readlines("input1.txt").first) }
