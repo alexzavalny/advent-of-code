@@ -109,7 +109,8 @@ def solution(input)
       direction_index = (direction_index + 1) % input.chars.size
       @step = @step + 1
       p "Current rock: #{@current_rock}"
-      #make movement if you can      if direction == "<"
+      #make movement if you can
+      if direction == "<"
         #puts "moving left?"
         if can_move_left?
           @xpos -= 1
