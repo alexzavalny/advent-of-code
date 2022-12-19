@@ -102,31 +102,24 @@ end
 
 
 def solution1(input)
-  sum = 0
-
-  input.each do |line|
+  input.sum do |line|
     numbers = line.scan(/\d+/).map(&:to_i)
     blueprint_id, ore_cost, cla_cost, obs_robot_ore_price, obs_robot_cla_price, geo_robot_ore_price, geo_robot_cla_price = numbers
     puts "Processing #{blueprint_id}"
     rez = process(24, ore_cost, cla_cost, obs_robot_ore_price, obs_robot_cla_price, geo_robot_ore_price, geo_robot_cla_price)
-    sum += rez * blueprint_id
+    rez * blueprint_id
   end
-
-  sum
 end
 
 def solution2(input)
-  geods = []
-
-  input.each do |line|
+  input[0..2].reduce([]) do |geods, line|
     numbers = line.scan(/\d+/).map(&:to_i)
     blueprint_id, ore_cost, cla_cost, obs_robot_ore_price, obs_robot_cla_price, geo_robot_ore_price, geo_robot_cla_price = numbers
     puts "Processing #{blueprint_id}"
     rez = process(32, ore_cost, cla_cost, obs_robot_ore_price, obs_robot_cla_price, geo_robot_ore_price, geo_robot_cla_price)
     geods << rez
   end
-
-  geods.reduce(:*)
+  .reduce(:*)
 end
 
-puts Benchmark.measure { puts solution1(File.readlines("input1.txt")) }
+puts Benchmark.measure { puts solution2(File.readlines("input1.txt")) }
