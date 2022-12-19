@@ -3,7 +3,7 @@ require 'benchmark'
 
 def process(time_total, ore_robot_ore_price, cla_robot_ore_price, obs_robot_ore_price, obs_robot_cla_price, geo_robot_ore_price, geo_robot_cla_price)
   max_geo = 0
-  state = [0, 0, 0, 0, 1, 0, 0, 0, time_total]
+  state = [0, 0, 0, 0, 1, 0, 0, 0, time_total] #only have 1 ore robot 
   states = [state]
   visited = Set[]
 
@@ -24,6 +24,22 @@ def process(time_total, ore_robot_ore_price, cla_robot_ore_price, obs_robot_ore_
 
     next if visited.include?(state)
     visited << state
+
+    # if you can buy geo robot, then do it and don't add any other chances
+    if ore >= geo_robot_ore_price and obs >= geo_robot_cla_price # buy geo unit
+      states << [
+        ore + ore_robots - geo_robot_ore_price, 
+        cla + cla_robots, 
+        obs + obs_robots - geo_robot_cla_price, 
+        geo + geo_robots, 
+        ore_robots, cla_robots, 
+        obs_robots, 
+        geo_robots + 1, 
+        new_time_left
+      ]
+
+      next
+    end
 
     #don't buy anything, otherwise will kill ways to buy something more expensive
     states << [
@@ -82,24 +98,11 @@ def process(time_total, ore_robot_ore_price, cla_robot_ore_price, obs_robot_ore_
         new_time_left
       ]
     end
-  
-    if ore >= geo_robot_ore_price and obs >= geo_robot_cla_price # buy geo unit
-      states << [
-        ore + ore_robots - geo_robot_ore_price, 
-        cla + cla_robots, 
-        obs + obs_robots - geo_robot_cla_price, 
-        geo + geo_robots, 
-        ore_robots, cla_robots, 
-        obs_robots, 
-        geo_robots + 1, 
-        new_time_left
-      ]
-    end
+
   end
 
   max_geo
 end
-
 
 def solution1(input)
   input.sum do |line|
@@ -122,4 +125,4 @@ def solution2(input)
   .reduce(:*)
 end
 
-puts Benchmark.measure { puts solution2(File.readlines("input1.txt")) }
+puts Benchmark.measure { puts solution1(File.readlines("input0.txt")) }
