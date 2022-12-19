@@ -19,6 +19,7 @@ def process(time_total, ore_robot_ore_price, cla_robot_ore_price, obs_robot_ore_
     #magical optimization, cutting down ore money if we are unable to spend it, which will reduce state space
     max_ore_price = [ore_robot_ore_price, cla_robot_ore_price, obs_robot_ore_price, geo_robot_ore_price].max
     ore = [ore, time_left * max_ore_price - ore_robots * new_time_left].min
+    #todo: same for all other currencies.
 
     state = [ore, cla, obs, geo, ore_robots, cla_robots, obs_robots, geo_robots, time_left]
 
