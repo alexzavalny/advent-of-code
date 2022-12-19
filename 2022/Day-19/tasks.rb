@@ -15,9 +15,10 @@ def process(time_total, ore_robot_ore_price, cla_robot_ore_price, obs_robot_ore_
     # NEXT LINE STOLEN FROM REDDIT AFTER GOLD STAR. But it works very fast only for input, not correct for test. :-)
     # LEAVING THIS FOR FUTURE REFERENCE
     next if geo + geo_robots + time_left < max_geo
-    max_geo = [max_geo, geo + geo_robots].max
 
+    max_geo = [max_geo, geo + geo_robots].max
     next if time_left == 1
+  
     new_time_left = time_left - 1
 
     #magical optimization, cutting down ore money if we are unable to spend it, which will reduce state count
