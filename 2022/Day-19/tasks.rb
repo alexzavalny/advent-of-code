@@ -12,15 +12,15 @@ def process(time_total, ore_robot_ore_price, cla_robot_ore_price, obs_robot_ore_
     state = states.shift
     ore, cla, obs, geo, ore_robots, cla_robots, obs_robots, geo_robots, time_left = state
 
-    # NEXT LINE STOLEN FROM REDDIT AFTER GOLD STAR. But it works only for input, not for test. :-)
+    # NEXT LINE STOLEN FROM REDDIT AFTER GOLD STAR. But it works very fast only for input, not correct for test. :-)
+    # LEAVING THIS FOR FUTURE REFERENCE
     next if geo + geo_robots + time_left < max_geo
     max_geo = [max_geo, geo + geo_robots].max
 
     next if time_left == 1
     new_time_left = time_left - 1
 
-    #magical optimization, cutting down ore money if we are unable to spend it, which will reduce state space
-    
+    #magical optimization, cutting down ore money if we are unable to spend it, which will reduce state count
     ore = [ore, time_left * max_ore_price - ore_robots * new_time_left].min
     #todo: same for all other currencies.
 
