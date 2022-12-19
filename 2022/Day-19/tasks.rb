@@ -2,7 +2,7 @@ require 'set'
 require 'benchmark'
 
 def process(time_total, ore_robot_ore_price, cla_robot_ore_price, obs_robot_ore_price, obs_robot_cla_price, geo_robot_ore_price, geo_robot_cla_price)
-  best = 0
+  max_geo = 0
   state = [0, 0, 0, 0, 1, 0, 0, 0, time_total]
   states = [state]
   visited = Set[]
@@ -11,7 +11,7 @@ def process(time_total, ore_robot_ore_price, cla_robot_ore_price, obs_robot_ore_
     state = states.shift
     ore, cla, obs, geo, ore_robots, cla_robots, obs_robots, geo_robots, time_left = state
   
-    best = [best, geo].max
+    max_geo = [max_geo, geo].max
 
     next if time_left == 0
     new_time_left = time_left - 1
@@ -97,7 +97,7 @@ def process(time_total, ore_robot_ore_price, cla_robot_ore_price, obs_robot_ore_
     end
   end
 
-  best
+  max_geo
 end
 
 
