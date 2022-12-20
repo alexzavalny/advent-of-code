@@ -11,10 +11,10 @@ def solution(nums, coef = 1, cycles = 1)
     end
   end
 
-  i = items.find_index { |el| el[:val] == 0 }
+  zero_ndx = items.find_index { |el| el[:val] == 0 }
 
   [1000, 2000, 3000].sum do |offset| 
-    items[(i + offset) % nums.size][:val]
+    items[(zero_ndx + offset) % nums.size][:val]
   end
 end
 
