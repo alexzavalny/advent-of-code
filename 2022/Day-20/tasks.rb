@@ -8,7 +8,7 @@ def solution(filename, coef = 1, cycles = 1)
   cycles.times do
     # we go through all numbers
     count.times do |ndx|
-      # find
+      # find element
       before_index = elements.find_index { _1[:ndx] == ndx }
       element = elements[before_index]
 
