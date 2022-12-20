@@ -1,32 +1,36 @@
-def solution(coef, cycles)
-  numbers = File.readlines("input1.txt").map(&:to_i)
-  elements = []
-  numbers.each_with_index { |el, ndx| elements << { ndx: ndx, value: el.to_i * coef } }
-
+def solution(filename, coef = 1, cycles = 1)
+  numbers = File.readlines(filename).map(&:to_i)
   count = numbers.size
+
+  # storing not only numbers but initial indexes
+  elements = numbers.map.with_index { |el, ndx| { ndx: ndx, val: el.to_i * coef } }
+
   cycles.times do
+    # we go through all numbers
     count.times do |ndx|
-      found_ndx = elements.find_index { _1[:ndx] == ndx }
-      el = elements[found_ndx] 
+      # find
+      before_index = elements.find_index { _1[:ndx] == ndx }
+      element = elements[before_index]
 
-      elements.delete_at(found_ndx)
-      new_ndx = found_ndx + el[:value]
-        new_ndx %= (count - 1)
+      # remove element from the list
+      elements.delete_at(before_index)
 
-      # for some reason, element gets to the end, not to the start
-      new_ndx = count - 1 if new_ndx == 0
-
-      elements.insert(new_ndx, el)
+      # reinsert at new index
+      after_index = (before_index + element[:val]) % (count - 1)
+      elements.insert(after_index, element)
     end
   end
 
-  zero_pos = elements.find_index { _1[:value] == 0 }
-  p_1000 = zero_pos + 1000
-  p_2000 = zero_pos + 2000
-  p_3000 = zero_pos + 3000
+  zero_pos = elements.find_index { _1[:val] == 0 }
 
-  elements[p_1000 % count][:value] + elements[p_2000 % count][:value] + elements[p_3000 % count][:value]
+  [1000, 2000, 3000].sum do |position| 
+    elements[(zero_pos + position) % count][:val]
+  end
 end
 
-puts "Part1: #{ solution(1, 1) }"
-puts "Part2: #{ solution(811589153, 10) }"
+require 'benchmark'
+
+puts Benchmark.measure {
+  puts "Part1: #{ solution("input1.txt") }"
+  puts "Part2: #{ solution("input1.txt", 811589153, 10) }"
+}
