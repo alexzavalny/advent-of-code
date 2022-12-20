@@ -1,6 +1,6 @@
 def solution(nums, coef = 1, cycles = 1)
   # [{ndx:0, val: 1}, {ndx: 1, val: 5},...]
-  items = nums.map.with_index { |el, ndx| { ndx: ndx, val: el.to_i * coef } }
+  items = nums.map.with_index { |el, ndx| { ndx: ndx, val: el * coef } }
 
   cycles.times do
     nums.size.times do |ndx|
