@@ -1,5 +1,4 @@
 def solution(nums, coef = 1, cycles = 1)
-  # [{ndx:0, val: 1}, {ndx: 1, val: 5},...]
   items = nums.map.with_index { |el, ndx| { ndx: ndx, val: el * coef } }
 
   cycles.times do
@@ -12,12 +11,10 @@ def solution(nums, coef = 1, cycles = 1)
   end
 
   zero_ndx = items.find_index { |el| el[:val] == 0 }
-
-  [1000, 2000, 3000].sum do |offset| 
-    items[(zero_ndx + offset) % nums.size][:val]
-  end
+  coords = [1000, 2000, 3000]
+  coords.sum { |coord| items[(zero_ndx + coord) % nums.size][:val] }
 end
 
-numbers = File.readlines("input0.txt").map(&:to_i)
+numbers = File.readlines("input1.txt").map(&:to_i)
 puts "Part1: ", solution(numbers)
 puts "Part2: ", solution(numbers, 811589153, 10)
