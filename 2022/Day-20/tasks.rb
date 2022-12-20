@@ -4,7 +4,7 @@ def solution(numbers, coef = 1, cycles = 1)
 
   cycles.times do
     numbers.size.times do |ndx|
-      before_index = elements.find_index { _1[:ndx] == ndx }
+      before_index = elements.find_index { |el| el[:ndx] == ndx }
       element = elements[before_index]
 
       elements.delete_at(before_index)
@@ -14,7 +14,7 @@ def solution(numbers, coef = 1, cycles = 1)
     end
   end
 
-  zero_pos = elements.find_index { _1[:val] == 0 }
+  zero_pos = elements.find_index { |el| el[:val] == 0 }
 
   [1000, 2000, 3000].sum do |position| 
     circle_position = (zero_pos + position) % numbers.size
