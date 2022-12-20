@@ -5,10 +5,7 @@ def solution(numbers, coef = 1, cycles = 1)
   cycles.times do
     numbers.size.times do |ndx|
       before_index = elements.find_index { |el| el[:ndx] == ndx }
-      element = elements[before_index]
-
-      elements.delete_at(before_index)
-
+      element = elements.delete_at(before_index)
       after_index = (before_index + element[:val]) % elements.size
       elements.insert(after_index, element)
     end
@@ -22,10 +19,6 @@ def solution(numbers, coef = 1, cycles = 1)
   end
 end
 
-require 'benchmark'
-
-puts Benchmark.measure {
-  numbers = File.readlines("input1.txt").map(&:to_i)
-  puts "Part1: #{ solution(numbers) }"
-  puts "Part2: #{ solution(numbers, 811589153, 10) }"
-}
+numbers = File.readlines("input0.txt").map(&:to_i)
+puts "Part1: ", solution(numbers)
+puts "Part2: ", solution(numbers, 811589153, 10)
