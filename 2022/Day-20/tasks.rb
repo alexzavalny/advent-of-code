@@ -1,5 +1,5 @@
 def solution(numbers, coef = 1, cycles = 1)
-  # storing not only numbers but initial indexes
+  # [{ndx:0, val: 1}, {ndx: 1, val: 5},...]
   elements = numbers.map.with_index { |el, ndx| { ndx: ndx, val: el.to_i * coef } }
 
   cycles.times do
