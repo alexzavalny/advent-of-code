@@ -1,4 +1,4 @@
-# The idea of binary search came up in reddit, so just for fun I decided to expand on task 1 solution
+# The idea of binary search came up in reddit, so after gold star, just for fun I decided to expand on task 1 solution
 eval(File.readlines("input1.txt", chomp: true).map do |l|
   l.gsub!("+", "-") if l.include? ("root")
   code = "def " + l
