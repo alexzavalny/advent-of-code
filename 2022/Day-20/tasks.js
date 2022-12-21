@@ -7,6 +7,7 @@ function solution(nums, coef = 1, cycles = 1) {
       let before = items.findIndex(el => el.ndx === ndx);
       let item = items.splice(before, 1)[0];
       let after = (before + item.val) % items.length;
+      if (after < 0) after += items.length;
       items.splice(after, 0, item);
     }
   }
