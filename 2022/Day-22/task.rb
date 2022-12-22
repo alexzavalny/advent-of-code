@@ -2,6 +2,7 @@ require '../../aoc_utils.rb'
 
 LOG_MODE = false
 GETS = false
+PART = ARGV[0] || 1
 
 DIRECTION_OFFSETS = {
   right: { x: 1, y: 0 },
@@ -53,9 +54,9 @@ def password(position, direction)
   puts "calculating password" if LOG_MODE
   facing_num = facing(direction)
   # log all parameters
-  wp(:position) {}
-  wp(:direction) {}
-  wp(:facing_num) {}
+  wp(:position) {} if LOG_MODE
+  wp(:direction) {} if LOG_MODE
+  wp(:facing_num) {} if LOG_MODE
   position[:y] * 1000 + position[:x] * 4 + facing(direction)
 end
 
@@ -69,62 +70,72 @@ def facing(direction)
   end
 end
 
+def go_around!(map, potential_pos, direction)
+  # we are on the edge, but we can go around
+  # if we are facing right, we jump to the first dot on this line
+  if direction == :right
+    # index of non-space character regexp
+    potential_pos[:x] = map[potential_pos[:y]].index(/[^ ]/)
+  end
+
+  # if we are facing left, we jump to the last dot on this line
+  if direction == :left
+    potential_pos[:x] = map[potential_pos[:y]].rindex(/[^ ]/)
+  end
+
+  # if we are facing up, we jump to the first dot on this column
+  if direction == :up
+    potential_pos[:y] = map.rindex { |line| line[potential_pos[:x]] != ' ' }
+  end
+
+  # if we are facing down, we jump to the last dot on this column
+  if direction == :down
+    potential_pos[:y] = map.index { |line| line[potential_pos[:x]] != ' ' }
+  end
+end
+
+def make_a_move(pos, direction)
+  {x: pos[:x] + DIRECTION_OFFSETS[direction][:x],
+    y: pos[:y] + DIRECTION_OFFSETS[direction][:y] }
+end
+
 def walk(map, path)
   # find start position -- first occurence of dot in first line
   pos = { x: map[1].index('.'), y: 1 }
   direction = :right
 
-  wp(:path) {}
+  wp(:path) {} if LOG_MODE
   path.in_groups_of(2).each do |steps, turn|
-    wp(:steps) {}
-    wp(:turn) {}
+    wp(:steps) {} if LOG_MODE
+    wp(:turn) {} if LOG_MODE
     print_map(map, direction, pos) if LOG_MODE
     gets if LOG_MODE && GETS
 
     steps.to_i.times do
-      puts "-----------------"
+      puts if LOG_MODE
       # leave a trace
       map[pos[:y]][pos[:x]] = direction_to_string(direction)
-      print_map(map, direction, pos) if LOG_MODE
-      # move
-      potential_pos = {x: pos[:x], y: pos[:y]}
 
-      potential_pos[:x] += DIRECTION_OFFSETS[direction][:x]
-      potential_pos[:y] += DIRECTION_OFFSETS[direction][:y]
-      wp(:pos) {}
-      wp("map[pos[:y]][pos[:x]]".to_sym) {}
-      wp(:potential_pos) {}
-      wp("map[potential_pos[:y]][potential_pos[:x]]".to_sym) {}
+      print_map(map, direction, pos) if LOG_MODE
+
+      # move
+      potential_pos = make_a_move(pos, direction)
+
+      wp(:pos) {} if LOG_MODE
+      wp("map[pos[:y]][pos[:x]]".to_sym) {} if LOG_MODE
+      wp(:potential_pos) {} if LOG_MODE
+      wp("map[potential_pos[:y]][potential_pos[:x]]".to_sym) {} if LOG_MODE
+
       # check if we are out of bounds
       if map[potential_pos[:y]][potential_pos[:x]] == ' '
-        puts "out of bounds"
+        puts "out of bounds" if LOG_MODE
         
-        # we are on the edge, but we can go around
-        # if we are facing right, we jump to the first dot on this line
-        if direction == :right
-          # index of non-space character regexp
-          potential_pos[:x] = map[potential_pos[:y]].index(/[^ ]/)
-        end
-
-        # if we are facing left, we jump to the last dot on this line
-        if direction == :left
-          potential_pos[:x] = map[potential_pos[:y]].rindex(/[^ ]/)
-        end
-
-        # if we are facing up, we jump to the first dot on this column
-        if direction == :up
-          potential_pos[:y] = map.rindex { |line| line[potential_pos[:x]] != ' ' }
-        end
-
-        # if we are facing down, we jump to the last dot on this column
-        if direction == :down
-          potential_pos[:y] = map.index { |line| line[potential_pos[:x]] != ' ' }
-        end
+        go_around!(map, potential_pos, direction)
       end
 
       # check if we hit a wall
       if map[potential_pos[:y]][potential_pos[:x]] == '#'
-        puts "hit a wall"
+        puts "hit a wall" if LOG_MODE
         break # we hit a wall, so we can't move any further
       end
 
@@ -153,4 +164,5 @@ def prepare_map_and_path(file)
 end
 
 map, path = prepare_map_and_path("input1.txt")
+
 walk(map, path)
