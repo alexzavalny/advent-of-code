@@ -2,7 +2,6 @@ require '../../aoc_utils.rb'
 
 LOG_MODE = false
 GETS = false
-PART = ARGV[0] || 1
 
 DIRECTION_OFFSETS = {
   right: { x: 1, y: 0 },
@@ -70,27 +69,27 @@ def facing(direction)
   end
 end
 
-def go_around!(map, potential_pos, direction)
+def go_around!(map, new_pos, direction)
   # we are on the edge, but we can go around
   # if we are facing right, we jump to the first dot on this line
   if direction == :right
     # index of non-space character regexp
-    potential_pos[:x] = map[potential_pos[:y]].index(/[^ ]/)
+    new_pos[:x] = map[new_pos[:y]].index(/[^ ]/)
   end
 
   # if we are facing left, we jump to the last dot on this line
   if direction == :left
-    potential_pos[:x] = map[potential_pos[:y]].rindex(/[^ ]/)
+    new_pos[:x] = map[new_pos[:y]].rindex(/[^ ]/)
   end
 
   # if we are facing up, we jump to the first dot on this column
   if direction == :up
-    potential_pos[:y] = map.rindex { |line| line[potential_pos[:x]] != ' ' }
+    new_pos[:y] = map.rindex { |line| line[new_pos[:x]] != ' ' }
   end
 
   # if we are facing down, we jump to the last dot on this column
   if direction == :down
-    potential_pos[:y] = map.index { |line| line[potential_pos[:x]] != ' ' }
+    new_pos[:y] = map.index { |line| line[new_pos[:x]] != ' ' }
   end
 end
 
@@ -119,27 +118,27 @@ def walk(map, path)
       print_map(map, direction, pos) if LOG_MODE
 
       # move
-      potential_pos = make_a_move(pos, direction)
+      new_pos = make_a_move(pos, direction)
 
       wp(:pos) {} if LOG_MODE
       wp("map[pos[:y]][pos[:x]]".to_sym) {} if LOG_MODE
-      wp(:potential_pos) {} if LOG_MODE
-      wp("map[potential_pos[:y]][potential_pos[:x]]".to_sym) {} if LOG_MODE
+      wp(:new_pos) {} if LOG_MODE
+      wp("map[new_pos[:y]][new_pos[:x]]".to_sym) {} if LOG_MODE
 
       # check if we are out of bounds
-      if map[potential_pos[:y]][potential_pos[:x]] == ' '
+      if map[new_pos[:y]][new_pos[:x]] == ' '
         puts "out of bounds" if LOG_MODE
         
-        go_around!(map, potential_pos, direction)
+        go_around!(map, new_pos, direction)
       end
 
       # check if we hit a wall
-      if map[potential_pos[:y]][potential_pos[:x]] == '#'
+      if map[new_pos[:y]][new_pos[:x]] == '#'
         puts "hit a wall" if LOG_MODE
         break # we hit a wall, so we can't move any further
       end
 
-      pos = potential_pos
+      pos = new_pos
 
       print_map(map, direction, pos) if LOG_MODE
       gets if LOG_MODE && GETS
