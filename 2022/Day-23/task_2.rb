@@ -25,25 +25,6 @@ def no_elves_in?(elves, elf, compass_direction)
   end
 end
 
-def count_of_empty_cells_in_smallest_area(elves)
-  max_x = elves.map { |elf| elf[0] }.max
-  max_y = elves.map { |elf| elf[1] }.max
-  min_x = elves.map { |elf| elf[0] }.min
-  min_y = elves.map { |elf| elf[1] }.min
-
-  empty_cells = 0
-
-  (min_y..max_y).each do |y|
-    (min_x..max_x).each do |x|
-      if !elves.include?([x, y])
-        empty_cells += 1
-      end
-    end
-  end
-
-  empty_cells
-end
-
 def no_elves_close?(elves, elf)
   x, y = elf
   positions_to_check = [ 
