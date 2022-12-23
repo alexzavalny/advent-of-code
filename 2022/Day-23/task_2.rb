@@ -48,28 +48,6 @@ def no_elves_close?(elves, elf)
   !some_elf_is_near
 end
 
-def print_elves_map(elves)
-  max_x = elves.map { |elf| elf[0] }.max
-  max_y = elves.map { |elf| elf[1] }.max
-  min_x = elves.map { |elf| elf[0] }.min
-  min_y = elves.map { |elf| elf[1] }.min
-
-  puts
-
-  (min_y..max_y).each do |y|
-    (min_x..max_x).each do |x|
-      if elves.include?([x, y])
-        print "#"
-      else
-        print '.'
-      end
-    end
-    puts
-  end
-
-  puts
-end
-
 def solution(input)
   elves = Set[]
   input.each_with_index do |line, y|
