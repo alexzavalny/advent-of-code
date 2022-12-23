@@ -117,7 +117,7 @@ def solution(input)
   #gets
 
   10.times do |round|
-    #puts "Round #{round + 1}"
+    puts "Round #{round + 1}"
 
     proposed_moves = { }
     #puts "Current direction check: #{direction_check}"
@@ -197,4 +197,4 @@ def prepare_map(filename)
   map =  map.map { |line| line + " " * (max_line_length - line.length) }
 end
 
-solution(prepare_map('input0-big.txt'))
+solution(prepare_map('input1.txt'))
