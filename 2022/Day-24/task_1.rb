@@ -88,6 +88,7 @@ def solution(blizzards, borders)
     blizzards = new_blizzards
     position_offsets = [ [-1, 0], [1, 0], [0, -1], [0, 1], [0, 0] ]
 
+
     next_minute_positions = { minute: minutes_positions[:minute] + 1, positions: Set[] }
     minutes_positions[:positions].each do |my_position|
       position_offsets.each do |offset|
@@ -112,6 +113,8 @@ def solution(blizzards, borders)
       end
     end
     my_positions_queue << next_minute_positions
+
+    #puts "After"
   end
 end
 
@@ -130,7 +133,7 @@ end
 
 def prepare_data(file)
   map_of_symbols = File.read(file).split("\n").map { |line| line.split('') }
-  borders = [ ] # {x, y } # if symbol = "#"
+  borders = Set[] # {x, y } # if symbol = "#"
   map_of_symbols.each_with_index do |line, y|
     line.each_with_index do |symbol, x|
       borders << [x, y] if symbol == '#'
@@ -149,5 +152,8 @@ def prepare_data(file)
 end
 
 
-blizzards, borders = prepare_data('input02.txt')
-solution(blizzards, borders)
+require 'benchmark'
+puts Benchmark.measure {
+  blizzards, borders = prepare_data('input1.txt')
+  solution(blizzards, borders)
+}

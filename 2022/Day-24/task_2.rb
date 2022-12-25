@@ -46,13 +46,12 @@ def solution(blizzards, borders)
   wp(:my_positions_queue) {}
   found_targets = Set[]
   while my_positions_queue.size > 0
-    #wp(:my_positions_queue) {}
-    #gets
     minutes_positions = my_positions_queue.shift
-
-    puts "Current minute: #{minutes_positions[:minute]}"
-    #puts "Variations: #{minutes_positions[:positions].size}"
-
+    break if minutes_positions.nil?
+    if minutes_positions[:minute] % 10 == 0
+      puts "Current minute: #{minutes_positions[:minute]}" 
+      puts "Variations: #{minutes_positions[:positions].size}"
+    end
     new_blizzards = { }
     blizzards.each_key do |blizzard_coord|
       #wp(:blizzard_coord) {}
@@ -118,12 +117,13 @@ def solution(blizzards, borders)
 
           if new_potential_position[:target] == 3
             puts "Found it at #{minutes_positions[:minute] + 1} New Target #{new_potential_position[:target]}!"
-            gets
-            exit
+            my_positions_queue = []
+            next_minute_positions = nil
+            break
           end
         end
 
-        next_minute_positions[:positions] << new_potential_position
+        next_minute_positions[:positions] << new_potential_position unless next_minute_positions.nil?
       end
     end
     my_positions_queue << next_minute_positions
@@ -145,7 +145,7 @@ end
 
 def prepare_data(file)
   map_of_symbols = File.read(file).split("\n").map { |line| line.split('') }
-  borders = [ ] # {x, y } # if symbol = "#"
+  borders = Set[ ] # {x, y } # if symbol = "#"
   map_of_symbols.each_with_index do |line, y|
     line.each_with_index do |symbol, x|
       borders << [x, y] if symbol == '#'
@@ -168,5 +168,8 @@ def prepare_data(file)
 end
 
 
-blizzards, borders = prepare_data('input1.txt')
-solution(blizzards, borders)
+require 'benchmark'
+puts Benchmark.measure {
+  blizzards, borders = prepare_data('input1.txt')
+  solution(blizzards, borders)
+}
