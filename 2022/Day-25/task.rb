@@ -1,38 +1,21 @@
 def num_to_snafu(num)
-  total = num
   snafu = ""
 
-  while total > 0
-    left = total % 5
-    total = total / 5
-
-    if left <= 2
-      snafu = left.to_s + snafu
-    else
-      snafu = (left == 4 ? "-" : "=") + snafu
-      total += 1
-    end
+  while num > 0
+    left = num % 5
+    num = num / 5
+    snafu = "012=-"[left] + snafu
+    num += 1 if left > 2 # this is the magic line. to my shame, I did it somewhat by trying out different numbers.
   end
+
   snafu
 end
 
 def snafu_to_num(snafu)
-  sum = 0
-  snafu.split('').reverse.each_with_index do |d, i|
+  snafu.split('').reverse.each_with_index.sum do |d, i|
     pow = 5 ** i
-    if d == "="
-      sum += -2 * pow
-    elsif d == "-"
-      sum += -1 * pow
-    elsif d == "0"
-      sum += 0 * pow
-    elsif d == "1"
-      sum += 1 * pow
-    elsif d == "2"
-      sum += 2 * pow
-    end
+    ("=-012".index(d) - 2) * pow
   end
-  sum
 end
 
 def solution(input)
