@@ -21,12 +21,13 @@ fn solution2(input: &String) {
         .collect::<Vec<i32>>();
 
     for elements in parsed_numbers.windows(3) {
+        let new_sum = elements.iter().sum::<i32>();
         if prev_sum > 0 {
-            if elements.iter().sum::<i32>() > prev_sum {
+            if new_sum > prev_sum {
                 times_increased += 1;
             }
         }
-        prev_sum = elements.iter().sum::<i32>();
+        prev_sum = new_sum;
     }
     println!("Solution 2: {}", times_increased);
 }
